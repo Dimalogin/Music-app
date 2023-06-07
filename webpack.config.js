@@ -5,7 +5,7 @@ module.exports = (env, argy) => {
     target: "web",
     mode: "development",
     entry: {
-      main: "./src/index.ts",
+      main: "./src/index",
     },
     output: {
       path: resolve(__dirname, "./dist"),
