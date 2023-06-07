@@ -1,4 +1,4 @@
-const {} = require("node:path");
+const { resolve } = require("node:path");
 
 module.exports = (env, argy) => {
   return {
@@ -13,7 +13,7 @@ module.exports = (env, argy) => {
       clean: true,
     },
     resolve: {
-      extentions: [".ts", ".js"],
+      extensions: [".ts", ".js"],
     },
     module: {
       rules: [
