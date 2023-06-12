@@ -1,6 +1,7 @@
 const { resolve } = require("node:path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = (argv, env) => {
   return {
@@ -33,7 +34,7 @@ module.exports = (argv, env) => {
         },
         {
           test: /\.s?css$/,
-          use: ['style-loader', "css-loader", "sass-loader"],
+          use: ["style-loader", "css-loader", "sass-loader"],
         },
       ],
     },
@@ -43,6 +44,14 @@ module.exports = (argv, env) => {
       }),
       new MiniCssExtractPlugin({
         filename: "[name].[contenthash].css",
+      }),
+      new CopyPlugin({
+        patterns: [
+          {
+            from: resolve(__dirname, "src/images"),
+            to: resolve(__dirname, "dist/images"),
+          },
+        ],
       }),
     ],
   };
