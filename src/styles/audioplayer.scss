@@ -1,0 +1,129 @@
+.audioplayer {
+  min-width: 350px;
+  float: left;
+  position: sticky;
+  top: 90px;
+  padding: 30px;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 30px;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
+
+  .audioplayer__row {
+    display: flex;
+    flex-flow: column nowrap;
+
+    .audioplayer-image {
+      width: 230px;
+      height: 230px;
+      margin: 0px auto 20px auto;
+      border: 1px solid #27ae60;
+      border-radius: 5px;
+      padding: 30px;
+
+      .image__album {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .audioplayer-details {
+      margin: 0px 0px 30px 0px;
+
+      .details-title__artist {
+        text-align: center;
+        margin: 0px 0px 5px 0px;
+      }
+
+      .details-title__track {
+        text-align: center;
+      }
+    }
+
+    .audioplayer-progress {
+      height: 6px;
+      width: 100%;
+      border-radius: 50px;
+      background: #bcbcbc;
+      cursor: pointer;
+      position: relative;
+      margin: 0px 0px 40px 0px;
+
+      .progress-bar {
+        height: inherit;
+        width: 0%;
+        position: relative;
+        border-radius: inherit;
+        background: #27ae60;
+      }
+
+      .progress-bar::before {
+        content: "";
+        position: absolute;
+        height: 12px;
+        width: 12px;
+        border-radius: 50%;
+        top: 50%;
+        right: -5px;
+        z-index: 2;
+        opacity: 1;
+        pointer-events: none;
+        transform: translateY(-50%);
+        background: inherit;
+        transition: opacity 0.2s ease;
+      }
+
+      .progress__start-time {
+        position: absolute;
+        top: 6px;
+        left: 0px;
+      }
+
+      .progress__finish-time {
+        position: absolute;
+        top: 5px;
+        right: 0px;
+      }
+    }
+    .audioplayer-display {
+      margin: 0px auto;
+      width: 200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .prev-btn {
+        background-color: transparent;
+      }
+      .prev-btn__icon {
+        width: 24px;
+      }
+
+      .trigger-btn {
+        position: relative;
+        background-color: #27ae60;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+      }
+
+      .trigger-btn__icon {
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        top: calc(50% - 12.5px);
+        left: calc(50% - 12.5px);
+      }
+
+      .next-btn {
+        background-color: transparent;
+      }
+
+      .next-btn__icon {
+        width: 24px;
+      }
+    }
+  }
+}

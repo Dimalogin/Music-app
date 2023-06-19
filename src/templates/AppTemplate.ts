@@ -1,6 +1,6 @@
 const AppTemplate = document.createElement("template");
 
-AppTemplate.innerHTML = `   <div class="wrapper">
+AppTemplate.innerHTML = ` <div class="wrapper">
 <header class="header">
   <div class="container">
     <div class="header__body">
@@ -31,7 +31,7 @@ AppTemplate.innerHTML = `   <div class="wrapper">
             <div class="audioplayer-image">
               <img
                 class="image__album"
-                src="./image/question.png"
+                src="./images/question.png"
                 alt="audioplayer-image"
               />
             </div>
@@ -54,7 +54,7 @@ AppTemplate.innerHTML = `   <div class="wrapper">
                 <button type="click" class="prev-btn">
                   <img
                     class="prev-btn__icon"
-                    src="./image/prev.png"
+                    src="./images/prev.png"
                     alt="prev"
                   />
                 </button>
@@ -67,7 +67,7 @@ AppTemplate.innerHTML = `   <div class="wrapper">
                 >
                   <img
                     class="trigger-btn__icon"
-                    src="./image/play.png"
+                    src="./images/play.png"
                     alt="trigger"
                   />
                 </button>
@@ -76,7 +76,7 @@ AppTemplate.innerHTML = `   <div class="wrapper">
                 <button type="click" class="next-btn">
                   <img
                     class="next-btn__icon"
-                    src="./image/next.png"
+                    src="./images/next.png"
                     alt="next"
                   />
                 </button>
@@ -89,10 +89,10 @@ AppTemplate.innerHTML = `   <div class="wrapper">
       <div class="tracks">
         <div class="tracks__body">
           <div class="tracks-results">
-            <div class="results__search"></div>
-            <div class="results__count"></div>
+            <div class="results__search">ffffff</div>
+            <div class="results__count">fdfdfff</div>
           </div>
-          <ul class="list-tracks"></ul>
+          <ul class="list-tracks">LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem  LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem  LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem  LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem</ul>
         </div>
       </div>
     </div>
