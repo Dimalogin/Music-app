@@ -1,6 +1,7 @@
 const trackItemTemplate = document.createElement("template");
 
-trackItemTemplate.innerHTML = `<li class="list-track track ">
+trackItemTemplate.innerHTML = `
+<li class="list-track track ">
 <div class="track-description">
   <div class="description-artist">
     <img

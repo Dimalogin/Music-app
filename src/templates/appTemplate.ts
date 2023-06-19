@@ -1,6 +1,6 @@
-const AppTemplate = document.createElement("template");
+const appTemplate = document.createElement("template");
 
-AppTemplate.innerHTML = ` <div class="wrapper">
+appTemplate.innerHTML = ` <div class="wrapper">
 <header class="header">
   <div class="container">
     <div class="header__body">
@@ -10,9 +10,12 @@ AppTemplate.innerHTML = ` <div class="wrapper">
           <form class="form-search">
             <div class="search__field">
               <input
+                name="titleTrack"
                 type="search"
                 class="search__input"
                 placeholder="Rihanna"
+                required
+                maxlength = '30'
               />
             </div>
             <button type="submit" class="search__btn">search</button>
@@ -92,8 +95,9 @@ AppTemplate.innerHTML = ` <div class="wrapper">
             <div class="results__search">Search: <span class = ''>Unknown</span></div>
             <div class="results__count">Results: <span class = ''>0</span></div>
           </div>
+          <div class = 'tracks-loader'></div>
 
-          <ul class="list-tracks">LoremLooremLorem lorem lorem rem  oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem LoremLooremLorem lorem lorem rem loreoremLoreml oreoremLoremloreoremLoremlor eoremLoreml oreloreor emLoremloreorem LoremloreoremLoremoremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem oremLorem lorem lorem m lorem</ul>
+          <ul class="list-tracks"></ul>
         </div>
       </div>
     </div>
@@ -127,4 +131,4 @@ AppTemplate.innerHTML = ` <div class="wrapper">
 </footer>
 </div>`;
 
-export default AppTemplate;
+export default appTemplate;
