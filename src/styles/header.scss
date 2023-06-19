@@ -2,6 +2,10 @@
   background-color: #fff;
   border-bottom: 1px solid #e1e1e1;
   font-family: "Poppins", sans-serif;
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
 
   .header__row {
     min-height: 70px;
@@ -23,8 +27,7 @@
 
       .search__input {
         display: block;
-        min-width: 320px;
-        min-height: 20px;
+        max-width: 220px;
         background-color: transparent;
         border-top: 1px solid #27ae60;
         border-left: 1px solid #27ae60;
@@ -32,15 +35,17 @@
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px;
         padding: 0px 10px;
-        font-size: 0.9em;
+        font-size: 1em;
       }
 
       .search__btn {
         background-color: #27ae60;
         color: #fff;
-
         min-height: 20px;
         padding: 0px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
       }
