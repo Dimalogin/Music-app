@@ -97,7 +97,11 @@ appTemplate.innerHTML = `
             <div class="results-count">Results: <span class = 'results-count__text'>0</span></div>
           </div>
           <div class = 'tracks-loader'></div>
-          <ul class="list-tracks"></ul>
+          <ul class="list-tracks">
+            <li class = 'tracks-start-message'>
+              <div class = 'start-message__text'>Введите имя исполнителя или название аудио.</div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

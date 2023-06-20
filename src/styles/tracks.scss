@@ -20,6 +20,17 @@
   }
 
   .list-tracks {
+    .tracks-start-message {
+      background-color: #fff;
+      border: 1px solid #e1e1e1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 90px;
+      padding: 3px 20px;
+      border-radius: 10px;
+    }
+
     .list-track {
       background-color: #fff;
       border: 1px solid #e1e1e1;

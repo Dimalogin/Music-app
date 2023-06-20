@@ -13,6 +13,26 @@ class App {
         case this.#form:
           this.#getDataFromApi(event);
           break;
+
+        case this.#tracksList:
+          const targetList = event.target as HTMLElement;
+
+          if (targetList.closest(".artist-trigger")) {
+            const track: HTMLElement | null =
+              targetList.closest(".list-track")!;
+            this.#launchTrack(track);
+          }
+
+          break;
+
+        case this.#audioplayer:
+          const targetAudioplayer = event.target as HTMLElement;
+
+          if (this.#barAudio?.src !== "") {
+            if (targetAudioplayer.closest(".trigger-btn")) {
+              this.#onTriggerAudioplayer();
+            }
+          }
       }
     },
   };
@@ -25,6 +45,7 @@ class App {
   #progressBar: HTMLDivElement | null = null;
   #barAudio: HTMLAudioElement | null = null;
 
+  #tracksMain: HTMLDivElement | null = null;
   #loader: HTMLDivElement | null = null;
 
   #arrayTracks: ViewNewTrackObject[] = [];
@@ -40,7 +61,9 @@ class App {
 
     this.#form = fullViewApp.querySelector(".form-search");
     this.#audioplayer = fullViewApp.querySelector(".audioplayer");
+    this.#tracksMain = fullViewApp.querySelector(".tracks");
     this.#tracksList = fullViewApp.querySelector(".list-tracks");
+    this.#barAudio = fullViewApp.querySelector("#bar-audio");
 
     body.innerHTML = "";
     body.appendChild(fullViewApp);
@@ -48,6 +71,8 @@ class App {
 
   #bindListeners(): void {
     this.#form?.addEventListener("submit", this.#eventListeners);
+    this.#tracksList?.addEventListener("click", this.#eventListeners);
+    this.#audioplayer?.addEventListener("click", this.#eventListeners);
   }
 
   #getDataFromApi(event: Event): void {
@@ -59,9 +84,11 @@ class App {
     getAudioFromApi(value.trim())
       .then((result) => {
         if (result.error) {
+          this.#initSearchingResults(value, 0);
           this.#renderErrorMessage(result.error.message);
         } else if (result.data) {
-          if (result.data.length > 0) {
+          const quantity = result.data.length;
+          if (quantity > 0) {
             const data = result.data.map((item) => {
               return {
                 isPlay: false,
@@ -70,17 +97,32 @@ class App {
             });
 
             this.#arrayTracks = [...data];
+            this.#initSearchingResults(value, quantity);
             this.#renderTracks(data);
           } else {
+            this.#initSearchingResults(value, 0);
             this.#renderNothingFound();
           }
         }
       })
       .catch((error) => {
+        this.#initSearchingResults(value, 0);
         this.#renderErrorMessage(error);
       });
 
     this.#form?.reset();
+  }
+
+  #initSearchingResults(value: string, result: number): void {
+    const resultSearch = this.#tracksMain?.querySelector(
+      ".results-search__text"
+    ) as HTMLElement;
+    const resultCount = this.#tracksMain?.querySelector(
+      ".results-count__text"
+    ) as HTMLElement;
+
+    resultSearch.innerHTML = value;
+    resultCount.innerHTML = String(result);
   }
 
   #renderTracks(data: ViewNewTrackObject[]) {
@@ -114,6 +156,7 @@ class App {
         titleArtist.innerHTML = item.artist.name;
         titleTrack.dataset.titleTrack = item.title_short;
         titleTrack.innerHTML = item.title_short;
+
         const duration = formatTime(item.duration);
         trackTime.innerHTML = duration;
 
@@ -130,7 +173,6 @@ class App {
     const fullView = erroMessageTemplate.content.cloneNode(
       true
     ) as DocumentFragment;
-
     const text: HTMLElement | null = fullView.querySelector(
       ".error-message__text"
     );
@@ -148,6 +190,151 @@ class App {
 
     this.#tracksList!.innerHTML = "";
     this.#tracksList!.appendChild(fullView);
+  }
+
+  #launchTrack(element: HTMLElement): void {
+    const trackId = element.dataset.idTrack!;
+    const trackSrc = element.dataset.trackSrc!;
+    const trackIsPlay = element.dataset.isPlay;
+
+    const artistIcon: HTMLElement | null =
+      element.querySelector(".artist__icon")!;
+    const titleArtist: HTMLElement | null =
+      element.querySelector(".title__artist")!;
+    const titleTrack: HTMLElement | null =
+      element.querySelector(".title__track")!;
+    const triggerIconTrack: HTMLImageElement | null =
+      element.querySelector(".trigger__icon")!;
+
+    const artistIconSrc = artistIcon.dataset.artistIcon!;
+    const titleArtistName = titleArtist.dataset.titleArtist!;
+    const titleTrackName = titleTrack.dataset.titleTrack!;
+
+    const dataTrack: Array<string> = [
+      trackSrc,
+      artistIconSrc,
+      titleArtistName,
+      titleTrackName,
+    ];
+
+    this.#audioplayer!.dataset.idTrack = trackId;
+
+    const triggerBtnAudioplayer = this.#audioplayer?.querySelector(
+      ".trigger-btn"
+    ) as HTMLElement;
+    const triggerBtnIconAudioplayer = this.#audioplayer?.querySelector(
+      ".trigger-btn__icon"
+    ) as HTMLImageElement;
+
+    if (this.#barAudio?.src === trackSrc) {
+      if (trackIsPlay === "true") {
+        element.dataset.isPlay = "false";
+        triggerIconTrack.src = "./images/play.png";
+
+        triggerBtnAudioplayer.dataset.onTrigger = "false";
+        triggerBtnIconAudioplayer.src = "./images/play.png";
+        this.#pauseMusic();
+      }
+
+      if (trackIsPlay === "false") {
+        element.dataset.isPlay = "true";
+        triggerIconTrack.src = "./images/pause.png";
+
+        triggerBtnAudioplayer.dataset.onTrigger = "true";
+        triggerBtnIconAudioplayer.src = "./images/pause.png";
+        this.#playMusic();
+      }
+    } else {
+      triggerIconTrack.src = "./images/pause.png";
+      triggerBtnAudioplayer.dataset.onTrigger = "true";
+      triggerBtnIconAudioplayer.src = "./images/pause.png";
+
+      this.#loadingTrack(dataTrack);
+      this.#updateTrackList(trackId);
+    }
+  }
+
+  #updateTrackList(trackId: string): void {
+    this.#arrayTracks = this.#arrayTracks.map((track) => {
+      return track.id === Number(trackId)
+        ? { ...track, isPlay: true }
+        : { ...track, isPlay: false };
+    });
+
+    this.#renderTracks(this.#arrayTracks);
+  }
+
+  #loadingTrack(data: Array<string>): void {
+    const [trackSrc, artistIconSrc, titleArtistName, titleTrackName] = data;
+
+    const audioplayerImage: HTMLElement | null =
+      this.#audioplayer?.querySelector(".audioplayer-image")!;
+    const audioplayerIcon: HTMLImageElement | null =
+      this.#audioplayer?.querySelector(".image__album")!;
+    const audioplayerTitleArtist: HTMLElement | null =
+      this.#audioplayer?.querySelector(".details-title__artist")!;
+    const audioplayerTitleTrack: HTMLElement | null =
+      this.#audioplayer?.querySelector(".details-title__track")!;
+
+    audioplayerImage.style.padding = "0px";
+    audioplayerIcon.src = artistIconSrc;
+    audioplayerTitleArtist.innerHTML = titleArtistName;
+    audioplayerTitleTrack.innerHTML = titleTrackName;
+
+    this.#barAudio!.src = trackSrc;
+    this.#playMusic();
+  }
+
+  #onTriggerAudioplayer(): void {
+    const trackId = this.#audioplayer?.dataset.idTrack!;
+    const audioplayerTriggerBtn: HTMLElement | null =
+      this.#audioplayer?.querySelector(".trigger-btn")!;
+    const audioplayerTriggerBtnIcon: HTMLImageElement | null =
+      this.#audioplayer?.querySelector(".trigger-btn__icon")!;
+
+    const audioplayerIsPlay = audioplayerTriggerBtn.dataset.onTrigger;
+    const indexCurrentTrack = this.#getIndexCurrentTrack(trackId);
+    const allTracks: NodeList | null =
+      this.#tracksList?.querySelectorAll(".list-track")!;
+
+    const currentTrack = Array.from(allTracks)[
+      indexCurrentTrack
+    ] as HTMLElement;
+
+    const triggerIconTrack: HTMLImageElement | null =
+      currentTrack.querySelector(".trigger__icon")!;
+
+    if (audioplayerIsPlay === "false") {
+      audioplayerTriggerBtn.dataset.onTrigger = "true";
+
+      audioplayerTriggerBtnIcon.src = "./images/pause.png";
+      triggerIconTrack.src = "./images/pause.png";
+      this.#playMusic();
+    }
+
+    if (audioplayerIsPlay === "true") {
+      audioplayerTriggerBtn.dataset.onTrigger = "false";
+
+      audioplayerTriggerBtnIcon.src = "./images/play.png";
+      triggerIconTrack.src = "./images/play.png";
+      this.#pauseMusic();
+    }
+  }
+
+  #getIndexCurrentTrack(trackId: string): number {
+    return this.#arrayTracks.findIndex((item) => {
+      if (item.id === Number(trackId)) {
+        return item;
+      }
+    });
+  }
+
+  #playMusic(): void {
+    this.#barAudio?.play();
+  }
+
+  #pauseMusic(): void {
+    this.#barAudio?.pause();
   }
 }
 
