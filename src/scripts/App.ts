@@ -27,12 +27,17 @@ class App {
 
         case this.#audioplayer:
           const targetAudioplayer = event.target as HTMLElement;
-
-          if (this.#barAudio?.src !== "") {
+          if (this.#barAudio?.src !== "" && this.#arrayTracks.length > 0) {
             if (targetAudioplayer.closest(".trigger-btn")) {
               this.#onTriggerAudioplayer();
             }
+
+            if (targetAudioplayer.closest(".audioplayer-progress")) {
+              this.#updateProgressByClick(event);
+            }
           }
+
+          break;
       }
     },
   };
@@ -42,7 +47,7 @@ class App {
   #tracksList: HTMLUListElement | null = null;
 
   #audioProgress: HTMLDivElement | null = null;
-  #progressBar: HTMLDivElement | null = null;
+  #progressBar: HTMLElement | null = null;
   #barAudio: HTMLAudioElement | null = null;
 
   #tracksMain: HTMLDivElement | null = null;
@@ -64,6 +69,8 @@ class App {
     this.#tracksMain = fullViewApp.querySelector(".tracks");
     this.#tracksList = fullViewApp.querySelector(".list-tracks");
     this.#barAudio = fullViewApp.querySelector("#bar-audio");
+    this.#audioProgress = fullViewApp.querySelector(".audioplayer-progress");
+    this.#progressBar = fullViewApp.querySelector(".progress-bar");
 
     body.innerHTML = "";
     body.appendChild(fullViewApp);
@@ -73,6 +80,20 @@ class App {
     this.#form?.addEventListener("submit", this.#eventListeners);
     this.#tracksList?.addEventListener("click", this.#eventListeners);
     this.#audioplayer?.addEventListener("click", this.#eventListeners);
+    this.#audioProgress?.addEventListener("click", this.#eventListeners);
+
+    this.#barAudio?.addEventListener(
+      "timeupdate",
+      this.#updateAudioplayerProgressBar.bind(this)
+    );
+    this.#barAudio?.addEventListener(
+      "timeupdate",
+      this.#updateAudioplayerTime.bind(this)
+    );
+    this.#barAudio?.addEventListener(
+      "ended",
+      this.#switchTrackOnCompletion.bind(this)
+    );
   }
 
   #getDataFromApi(event: Event): void {
@@ -84,6 +105,7 @@ class App {
     getAudioFromApi(value.trim())
       .then((result) => {
         if (result.error) {
+          this.#arrayTracks = [];
           this.#initSearchingResults(value, 0);
           this.#renderErrorMessage(result.error.message);
         } else if (result.data) {
@@ -100,12 +122,14 @@ class App {
             this.#initSearchingResults(value, quantity);
             this.#renderTracks(data);
           } else {
+            this.#arrayTracks = [];
             this.#initSearchingResults(value, 0);
             this.#renderNothingFound();
           }
         }
       })
       .catch((error) => {
+        this.#arrayTracks = [];
         this.#initSearchingResults(value, 0);
         this.#renderErrorMessage(error);
       });
@@ -297,27 +321,29 @@ class App {
     const allTracks: NodeList | null =
       this.#tracksList?.querySelectorAll(".list-track")!;
 
-    const currentTrack = Array.from(allTracks)[
-      indexCurrentTrack
-    ] as HTMLElement;
+    if (indexCurrentTrack !== -1) {
+      const currentTrack = Array.from(allTracks)[
+        indexCurrentTrack
+      ] as HTMLElement;
 
-    const triggerIconTrack: HTMLImageElement | null =
-      currentTrack.querySelector(".trigger__icon")!;
+      const triggerIconTrack: HTMLImageElement | null =
+        currentTrack.querySelector(".trigger__icon")!;
 
-    if (audioplayerIsPlay === "false") {
-      audioplayerTriggerBtn.dataset.onTrigger = "true";
+      if (audioplayerIsPlay === "false") {
+        audioplayerTriggerBtn.dataset.onTrigger = "true";
 
-      audioplayerTriggerBtnIcon.src = "./images/pause.png";
-      triggerIconTrack.src = "./images/pause.png";
-      this.#playMusic();
-    }
+        audioplayerTriggerBtnIcon.src = "./images/pause.png";
+        triggerIconTrack.src = "./images/pause.png";
+        this.#playMusic();
+      }
 
-    if (audioplayerIsPlay === "true") {
-      audioplayerTriggerBtn.dataset.onTrigger = "false";
+      if (audioplayerIsPlay === "true") {
+        audioplayerTriggerBtn.dataset.onTrigger = "false";
 
-      audioplayerTriggerBtnIcon.src = "./images/play.png";
-      triggerIconTrack.src = "./images/play.png";
-      this.#pauseMusic();
+        audioplayerTriggerBtnIcon.src = "./images/play.png";
+        triggerIconTrack.src = "./images/play.png";
+        this.#pauseMusic();
+      }
     }
   }
 
@@ -335,6 +361,67 @@ class App {
 
   #pauseMusic(): void {
     this.#barAudio?.pause();
+  }
+
+  #updateAudioplayerProgressBar(event: Event): void {
+    const target = event.target as HTMLAudioElement;
+    const currentTime = target.currentTime;
+    const duration = target.duration;
+    let progressWidth = (currentTime / duration) * 100;
+    this.#progressBar!.style.width = `${progressWidth}%`;
+
+    const musicCurrentTime: HTMLElement | null =
+      this.#audioplayer?.querySelector(".progress__start-time")!;
+
+    musicCurrentTime.innerHTML = formatTime(Math.floor(currentTime));
+  }
+
+  #updateAudioplayerTime(event: Event): void {
+    const target = event.target as HTMLAudioElement;
+    const mainDuration = target.duration;
+
+    const musicDuartion: HTMLElement | null = this.#audioplayer?.querySelector(
+      ".progress__finish-time"
+    )!;
+
+    musicDuartion.innerHTML = formatTime(Math.floor(mainDuration));
+  }
+
+  #switchTrackOnCompletion(): void {
+    const trackId = this.#audioplayer?.dataset.idTrack!;
+    const indexCurrentTrack = this.#getIndexCurrentTrack(trackId);
+    const allTracks: NodeList | null =
+      this.#tracksList?.querySelectorAll(".list-track")!;
+
+    if (allTracks.length > 0) {
+      const lastTrack = allTracks.length - 1;
+      let nextTrack;
+
+      if (indexCurrentTrack === lastTrack) {
+        nextTrack = allTracks[0] as HTMLElement;
+      } else {
+        nextTrack = allTracks[indexCurrentTrack + 1] as HTMLElement;
+      }
+
+      const artistTrigger: HTMLElement | null =
+        nextTrack?.querySelector(".artist-trigger")!;
+
+      setTimeout(() => {
+        artistTrigger.click();
+      }, 500);
+    }
+  }
+
+  #updateProgressByClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    const mouse = event as MouseEvent;
+
+    let progressWidth = target.clientWidth;
+    let clickedOffsetX = mouse.offsetX;
+    let songDuration = this.#barAudio?.duration!;
+
+    this.#barAudio!.currentTime =
+      (clickedOffsetX / progressWidth) * songDuration;
   }
 }
 
