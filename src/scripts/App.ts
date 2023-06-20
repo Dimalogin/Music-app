@@ -3,6 +3,8 @@ import getAudioFromApi from "./utils/getAudioFromApi";
 import ViewNewTrackObject from "../interfaces/ViewNewTrackObject";
 import trackItemTemplate from "../templates/trackItemTemplate";
 import formatTime from "./utils/formatTIme";
+import nothingFoundTemplate from "../templates/nothingFoundTemplate";
+import erroMessageTemplate from "../templates/errorMessageTemplate";
 
 class App {
   readonly #eventListeners = {
@@ -56,7 +58,6 @@ class App {
 
     getAudioFromApi(value.trim())
       .then((result) => {
-        console.log(result);
         if (result.error) {
           this.#renderErrorMessage(result.error.message);
         } else if (result.data) {
@@ -117,8 +118,8 @@ class App {
         trackTime.innerHTML = duration;
 
         item.isPlay
-          ? (triggerIcon.src = "./image/pause.png")
-          : (triggerIcon.src = "./image/play.png");
+          ? (triggerIcon.src = "./images/pause.png")
+          : (triggerIcon.src = "./images/play.png");
         fragment.appendChild(element);
         return fragment;
       }, document.createDocumentFragment())
@@ -126,11 +127,27 @@ class App {
   }
 
   #renderErrorMessage(message: string): void {
-    console.log(message)
+    const fullView = erroMessageTemplate.content.cloneNode(
+      true
+    ) as DocumentFragment;
+
+    const text: HTMLElement | null = fullView.querySelector(
+      ".error-message__text"
+    );
+
+    text!.innerHTML = message;
+
+    this.#tracksList!.innerHTML = "";
+    this.#tracksList!.appendChild(fullView);
   }
 
   #renderNothingFound(): void {
+    const fullView = nothingFoundTemplate.content.cloneNode(
+      true
+    ) as DocumentFragment;
+
     this.#tracksList!.innerHTML = "";
+    this.#tracksList!.appendChild(fullView);
   }
 }
 

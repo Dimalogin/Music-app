@@ -1,6 +1,7 @@
 const appTemplate = document.createElement("template");
 
-appTemplate.innerHTML = ` <div class="wrapper">
+appTemplate.innerHTML = ` 
+<div class="wrapper">
 <header class="header">
   <div class="container">
     <div class="header__body">
@@ -92,11 +93,10 @@ appTemplate.innerHTML = ` <div class="wrapper">
       <div class="tracks">
         <div class="tracks__body">
           <div class="tracks-results">
-            <div class="results__search">Search: <span class = ''>Unknown</span></div>
-            <div class="results__count">Results: <span class = ''>0</span></div>
+            <div class="results-search">Search: <span class = 'results-search__text'>Unknown</span></div>
+            <div class="results-count">Results: <span class = 'results-count__text'>0</span></div>
           </div>
           <div class = 'tracks-loader'></div>
-
           <ul class="list-tracks"></ul>
         </div>
       </div>
