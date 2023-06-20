@@ -35,6 +35,14 @@ class App {
             if (targetAudioplayer.closest(".audioplayer-progress")) {
               this.#updateProgressByClick(event);
             }
+
+            if (targetAudioplayer.closest(".prev-btn")) {
+              this.#previousTrack();
+            }
+
+            if (targetAudioplayer.closest(".next-btn")) {
+              this.#nextTrack();
+            }
           }
 
           break;
@@ -71,6 +79,7 @@ class App {
     this.#barAudio = fullViewApp.querySelector("#bar-audio");
     this.#audioProgress = fullViewApp.querySelector(".audioplayer-progress");
     this.#progressBar = fullViewApp.querySelector(".progress-bar");
+    this.#loader = fullViewApp.querySelector(".tracks-loader");
 
     body.innerHTML = "";
     body.appendChild(fullViewApp);
@@ -98,41 +107,50 @@ class App {
 
   #getDataFromApi(event: Event): void {
     event.preventDefault();
+    
+    this.#tracksList!.innerHTML = "";
+    this.#showLoader();
 
     const form = new FormData(this.#form!);
     const value = form.get("titleTrack") as string;
 
-    getAudioFromApi(value.trim())
-      .then((result) => {
-        if (result.error) {
-          this.#arrayTracks = [];
-          this.#initSearchingResults(value, 0);
-          this.#renderErrorMessage(result.error.message);
-        } else if (result.data) {
-          const quantity = result.data.length;
-          if (quantity > 0) {
-            const data = result.data.map((item) => {
-              return {
-                isPlay: false,
-                ...item,
-              };
-            });
-
-            this.#arrayTracks = [...data];
-            this.#initSearchingResults(value, quantity);
-            this.#renderTracks(data);
-          } else {
+    setTimeout(() => {
+      getAudioFromApi(value.trim())
+        .then((result) => {
+          if (result.error) {
             this.#arrayTracks = [];
             this.#initSearchingResults(value, 0);
-            this.#renderNothingFound();
+            this.#renderErrorMessage(result.error.message);
+            this.#hideLoader();
+          } else if (result.data) {
+            const quantity = result.data.length;
+            if (quantity > 0) {
+              const data = result.data.map((item) => {
+                return {
+                  isPlay: false,
+                  ...item,
+                };
+              });
+
+              this.#arrayTracks = [...data];
+              this.#initSearchingResults(value, quantity);
+              this.#renderTracks(data);
+              this.#hideLoader();
+            } else {
+              this.#arrayTracks = [];
+              this.#initSearchingResults(value, 0);
+              this.#renderNothingFound();
+              this.#hideLoader();
+            }
           }
-        }
-      })
-      .catch((error) => {
-        this.#arrayTracks = [];
-        this.#initSearchingResults(value, 0);
-        this.#renderErrorMessage(error);
-      });
+        })
+        .catch((error) => {
+          this.#arrayTracks = [];
+          this.#initSearchingResults(value, 0);
+          this.#renderErrorMessage(error);
+          this.#hideLoader();
+        });
+    }, 500);
 
     this.#form?.reset();
   }
@@ -422,6 +440,60 @@ class App {
 
     this.#barAudio!.currentTime =
       (clickedOffsetX / progressWidth) * songDuration;
+  }
+
+  #previousTrack(): void {
+    const trackId = this.#audioplayer?.dataset.idTrack!;
+    const indexCurrentTrack = this.#getIndexCurrentTrack(trackId);
+    const allTracks: NodeList | null =
+      this.#tracksList?.querySelectorAll(".list-track")!;
+
+    let previousTrack;
+
+    if (indexCurrentTrack !== -1) {
+      const lastTracks = allTracks.length - 1;
+
+      if (indexCurrentTrack === 0) {
+        previousTrack = allTracks[lastTracks] as HTMLElement;
+      } else {
+        previousTrack = allTracks[indexCurrentTrack - 1] as HTMLElement;
+      }
+
+      const artistTrigger: HTMLElement | null =
+        previousTrack?.querySelector(".artist-trigger")!;
+      artistTrigger.click();
+    }
+  }
+
+  #nextTrack(): void {
+    const trackId = this.#audioplayer?.dataset.idTrack!;
+    const indexCurrentTrack = this.#getIndexCurrentTrack(trackId);
+    const allTracks: NodeList | null =
+      this.#tracksList?.querySelectorAll(".list-track")!;
+
+    let nextTrack;
+
+    if (indexCurrentTrack !== -1) {
+      const lastTracks = allTracks.length - 1;
+
+      if (indexCurrentTrack === lastTracks) {
+        nextTrack = allTracks[0] as HTMLElement;
+      } else {
+        nextTrack = allTracks[indexCurrentTrack + 1] as HTMLElement;
+      }
+
+      const artistTrigger: HTMLElement | null =
+        nextTrack?.querySelector(".artist-trigger")!;
+      artistTrigger.click();
+    }
+  }
+
+  #showLoader(): void {
+    this.#loader!.style.display = "block";
+  }
+
+  #hideLoader(): void {
+    this.#loader!.style.display = "none";
   }
 }
 
