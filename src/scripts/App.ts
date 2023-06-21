@@ -107,7 +107,7 @@ class App {
 
   #getDataFromApi(event: Event): void {
     event.preventDefault();
-    
+
     this.#tracksList!.innerHTML = "";
     this.#showLoader();
 

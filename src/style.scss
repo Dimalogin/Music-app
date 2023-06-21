@@ -6,6 +6,8 @@ body {
 
 .wrapper {
   min-height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .container {
@@ -16,5 +18,12 @@ body {
 }
 
 main {
+  flex: 1 1 auto;
   padding: 100px 0px 110px 0px;
+}
+
+@media (max-width: 900px) {
+  main {
+    padding: 100px 0px 30px 0px;
+  }
 }

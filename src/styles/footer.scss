@@ -40,3 +40,10 @@ footer {
     }
   }
 }
+
+@media (max-width: 900px) {
+  footer {
+    position: static;
+   
+  }
+}
