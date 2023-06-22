@@ -99,7 +99,7 @@ appTemplate.innerHTML = `
           <div class = 'tracks-loader'></div>
           <ul class="list-tracks">
             <li class = 'tracks-start-message'>
-              <div class = 'start-message__text'>Введите имя исполнителя или название аудио.</div>
+              <div class = 'start-message__text'>Enter the artist name or audio title.</div>
             </li>
           </ul>
         </div>
