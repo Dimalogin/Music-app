@@ -9,7 +9,7 @@ module.exports = (argv, env) => {
     mode: "development",
     devtool: "source-map",
     entry: {
-      main: "./src/index",
+      main: "./music-app/index",
     },
     output: {
       path: resolve(__dirname, "./dist"),
@@ -40,7 +40,7 @@ module.exports = (argv, env) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: "./src/index.html",
+        template: "./music-app/index.html",
       }),
       new MiniCssExtractPlugin({
         filename: "[name].[contenthash].css",
@@ -48,7 +48,7 @@ module.exports = (argv, env) => {
       new CopyPlugin({
         patterns: [
           {
-            from: resolve(__dirname, "src/images"),
+            from: resolve(__dirname, "music-app/images"),
             to: resolve(__dirname, "dist/images"),
           },
         ],
