@@ -1,7 +1,7 @@
 ## Music App - project from RSSchool
 
 
-Music App: ['Demo']()
+Music App: [Demo]()
 
 Implemented:
 
